@@ -1,0 +1,28 @@
+/* app global css */
+/* Глобальна стилізація прокрутки */
+::-webkit-scrollbar {
+    width: 8px; /* Товщина вертикальної прокрутки */
+    height: 8px; /* Товщина горизонтальної прокрутки */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1); /* Фон треку */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #00b4db; /* Колір прокрутки */
+    border-radius: 10px;
+    transition: background 0.3s;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0083b0; /* Колір при наведенні */
+  }
+  
+  /* Для Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #00b4db rgba(255, 255, 255, 0.1);
+  }
+  
