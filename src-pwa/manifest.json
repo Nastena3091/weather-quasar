@@ -3,7 +3,7 @@
   "short_name": "Weather",
   "description": "Прогноз погоди у зручному додатку",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "./",
   "background_color": "#ffffff",
   "theme_color": "#0078d7",
   "icons": [

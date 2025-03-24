@@ -4,8 +4,8 @@
 import { defineConfig } from '#q-app/wrappers'
 
 export default defineConfig((/* ctx */) => {
+  base:"/weather-quasar/"
   return {
-    base:"/weather-quasar/",
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
 
@@ -144,7 +144,7 @@ export default defineConfig((/* ctx */) => {
         short_name: "Weather",
         description: "Прогноз погоди у зручному додатку",
         display: "standalone",
-        start_url: "/",
+        start_url: "./",
         theme_color: "#0078d7",
         background_color: "#ffffff",
         icons: [
