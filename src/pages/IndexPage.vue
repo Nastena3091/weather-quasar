@@ -100,6 +100,8 @@ export default {
               params: { lat, lon, appid: API_KEY, units: "metric", lang: "ua" },
             });
             weatherData.value = response.data;
+            getHourlyForecast(null, lat, lon);
+            getWeeklyForecast(null, lat, lon);
           } catch (error) {
             console.error("Помилка отримання погоди за місцем розташування:", error);
           }
@@ -108,6 +110,7 @@ export default {
           console.error("Помилка доступу до геолокації:", error);
         }
       );
+      
     };
 
     const saveToCache = (key, data) => {
@@ -145,20 +148,22 @@ export default {
       getWeeklyForecast(city);
     };
 
-    const getHourlyForecast = async (city) => {
-      const cacheKey = `hourly-${city}`;
+    const getHourlyForecast = async (city = null, lat = null, lon = null) => {
+      const cacheKey = city ? `hourly-${city}` : `hourly-${lat}-${lon}`;
       const cachedData = getFromCache(cacheKey);
-      
+
       if (cachedData) {
-        hourlyForecast.value = [...cachedData]; // Розпакування масиву
+        hourlyForecast.value = [...cachedData]; // Використовуємо кеш
         console.log("Loaded from cache:", hourlyForecast.value);
         return;
       }
-      
+
       try {
-        const response = await api.get(`forecast/hourly`, {
-          params: { q: city, appid: API_KEY, lang: "ua", units: "metric" },
-        });
+        const params = city 
+          ? { q: city, appid: API_KEY, lang: "ua", units: "metric" }
+          : { lat, lon, appid: API_KEY, lang: "ua", units: "metric" };
+
+        const response = await api.get(`forecast/hourly`, { params });
 
         hourlyForecast.value = [...response.data.list.slice(0, 24)];
         console.log("Loaded from API:", hourlyForecast.value);
@@ -171,23 +176,29 @@ export default {
 
 
 
-    const getWeeklyForecast = async (city) => {
-      const cacheKey = `weekly-${city}`;
+    const getWeeklyForecast = async (city = null, lat = null, lon = null) => {
+      const cacheKey = city ? `weekly-${city}` : `weekly-${lat}-${lon}`;
       const cachedData = getFromCache(cacheKey);
+      
       if (cachedData) {
         weeklyForecast.value = cachedData;
         return;
       }
+
       try {
-        const response = await api.get(`forecast/daily`, {
-          params: { q: city, appid: API_KEY, lang: "ua", units: "metric", cnt: 7 },
-        });
+        const params = city 
+          ? { q: city, appid: API_KEY, lang: "ua", units: "metric", cnt: 7 }
+          : { lat, lon, appid: API_KEY, lang: "ua", units: "metric", cnt: 7 };
+
+        const response = await api.get(`forecast/daily`, { params });
+
         weeklyForecast.value = response.data.list;
         saveToCache(cacheKey, weeklyForecast.value);
       } catch (error) {
         console.error("Помилка отримання прогнозу:", error);
       }
     };
+
 
     const addCity = () => {
       if (search.value && !cities.value.includes(search.value)) {
