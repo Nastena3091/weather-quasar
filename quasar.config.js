@@ -5,7 +5,7 @@ import { defineConfig } from '#q-app/wrappers'
 
 export default defineConfig((/* ctx */) => {
   return {
-    base:"/weather-quasar",
+    base:"/weather-quasar/",
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
 
